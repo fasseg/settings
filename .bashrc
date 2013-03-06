@@ -25,10 +25,13 @@ complete -cf sudo
 complete -cf man
 
 shopt -s autocd
+export EDITOR=/usr/bin/vim
+export VISUAL=/usr/bin/vim
 
 source /usr/share/git/completion/git-completion.bash
 source /usr/share/git/git-prompt.sh
 
+eval $(dircolors -b)
 # git
 #if [ -f `brew --prefix`/etc/bash_completion.d/git-completion.bash ]; then
 #. `brew --prefix`/etc/bash_completion.d/git-completion.bash
