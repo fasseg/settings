@@ -6,7 +6,7 @@
 [[ $- != *i* ]] && return
 
 
-alias ls='ls --color=auto'
+alias ls='ls --color=auto -h'
 alias pacman='pacman-color'
 alias pamcan='pacman'
 alias st='git status -s'
