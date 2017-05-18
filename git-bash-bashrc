@@ -1,0 +1,28 @@
+# Set the following variable to 1 if you want to add your ssh key automatically
+# when a new ssh-agent is created
+SSH_ADD_ON_OPEN=0
+
+# Set the default expiry time of a ssh key added to the agent in seconds
+# A value of 0 means that the key does not expire
+SSH_KEY_EXPIRE=0
+
+alias ssh-add="ssh-add -t $SSH_KEY_EXPIRE"
+
+SSH_AGENT_PROPERTIES=$HOME/AppData/Local/ssh-agent.properties
+SSH_AGENT_PID=$(tasklist | grep ssh-agent | tr -s ' ' | cut -d ' ' -f 2)
+if [[ -z $SSH_AGENT_PID ]];then
+    eval `ssh-agent -s` > /dev/null 2>&1
+    echo -n $SSH_AUTH_SOCK > $SSH_AGENT_PROPERTIES
+    echo -n " $SSH_AGENT_PID" >> $SSH_AGENT_PROPERTIES
+    if [[ $SSH_ADD_ON_OPEN -eq 1 ]]; then
+        ssh-add -t $SSH_KEY_EXPIRE
+    fi
+else
+    if [[ -f "$SSH_AGENT_PROPERTIES" ]];then
+        IFS=' ' read -r -a data < $SSH_AGENT_PROPERTIES
+        export SSH_AUTH_SOCK=${data[0]}
+        export SSH_AGENT_PID=${data[1]}
+    else
+        echo "WARN: Unable to read variables from $SSH_AGENT_PROPERTIES: File does not exist"
+    fi
+fi
