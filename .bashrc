@@ -1,51 +1,40 @@
-#
-# ~/.bashrc
-#
-
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-
-# some aliases for often used commands and typos
-alias ls='ls --color=auto -hA'
-alias pacman='pacman-color'
-alias pamcan='pacman'
+# aliases for common commands
 alias st='git status -s'
-alias push='git push origin master'
-alias mvnnt='mvn -DskipITs -DskipTests -Dmaven.test.skip=true'
-
-# export some variables for various programs
-export PATH=${PATH}:/home/ruckus/scripts
-export EDITOR=/usr/bin/vim
-export HISTSIZE=5000
-export IRCNICK="fasseg"
-export IRCNAME="Six by nine. Forty-two."
-export MAVEN_OPTS="-XX:MaxPermSize=256m -Xmx1024m"
-
-# add command completion for sudo and man
-complete -cf sudo
-complete -cf man
-
-# cd into a directory by just typing a path
-shopt -s autocd
+alias ls='ls -hA --color=auto'
+alias grep='grep --color'
+alias json='python -m json.tool'
+alias fwlogin='fwlogin -u d0e01685 https://172.23.0.220:900/ https://172.23.0.230:900/'
 
 # set the editor variables
 export EDITOR=/usr/bin/vim
 export VISUAL=/usr/bin/vim
 
-# add git completion and the git prompt
+# set the java home
+export JAVA_HOME=/usr/lib/jvm/java-8-jdk
+
+complete -c man which
+complete -cf sudo
+
+# Set the cli prompt
+source /usr/share/git/completion/git-prompt.sh
+#PS1='[\u@\h \W$(__git_ps1 " (%s)")]\$ '
+GREEN="\[$(tput setaf 2)\]"
+YELLOW="\[$(tput setaf 11)\]"
+RED="\[$(tput setaf 9)\]"
+CYAN="\[$(tput setaf 6)\]"
+RESET="\[$(tput sgr0)\]"
+PROMPT_COMMAND=__prompt_cmd
+__prompt_cmd() {
+    local exitcode="$?"
+    if [ $exitcode -eq 0 ]; then
+        export PS1="[${YELLOW}\W${CYAN}$(__git_ps1 " (%s)")${RESET}] "
+    else
+        export PS1="[${YELLOW}\W${CYAN}$(__git_ps1 " (%s)") ${RED}E:$exitcode${RESET}] "
+    fi
+}
+
+# git completion
 source /usr/share/git/completion/git-completion.bash
-source /usr/share/git/git-prompt.sh
-
-# set the dircolors
-eval $(dircolors -b)
-
-# git
-#if [ -f `brew --prefix`/etc/bash_completion.d/git-completion.bash ]; then
-#. `brew --prefix`/etc/bash_completion.d/git-completion.bash
-#fi
-export GIT_PS1_SHOWDIRTYSTATE=1
-
-# prompt
-#export PS1='\u@\h \[\e[0;32m\]\W\[\e[0m\]$(__git_ps1 " (%s)")\$ '
-export PS1='\[\e[1;32m\][\u@\h \W$(__git_ps1 " (%s)")]\[\e[0m\] '
