@@ -41,7 +41,7 @@ function UpdateStatusLine()
         let l:line="%#User2#"
     endif
     let l:line.="\ %F\ " . s:indent_type
-    let l:line.="%m%=type:%Y\ %r\ value:%b [0x%B]\ %p%%"
+    let l:line.="%m%=value=%b\ [0x%B]\ %p%%\ %l,%c\ type:%Y\ %r"
     return l:line
 endfunction
 
@@ -74,6 +74,8 @@ let g:Powerline_symbols = 'unicode'
 set mouse-=a
 
 set completeopt=menuone
+
+set nospell
 
 map <F4> :e %:p:s,.h$,.X123X,:s,.c$,.h,:s,.X123X$,.c,<CR>
 inoremap <Nul> <C-n>
