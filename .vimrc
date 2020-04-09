@@ -41,7 +41,7 @@ function UpdateStatusLine()
         let l:line="%#User2#"
     endif
     let l:line.="\ %F\ " . s:indent_type
-    let l:line.="%m%=value=%b\ [0x%B]\ %p%%\ %l,%c\ type:%Y\ %r"
+    let l:line.="\ [%L lines]\ %m%=value=%b\ [0x%B]\ %p%%\ %l,%c\ type:%Y\ %r"
     return l:line
 endfunction
 
@@ -55,8 +55,16 @@ set statusline=%!UpdateStatusLine()
 
 set nocompatible
 
-" pathogen
-" execute pathogen#infect()
+" Vundle init
+filetype off " Will be turned on later again, but required by Vundle it seems
+set rtp +=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+Plugin 'VundleVim/Vundle.vim'
+" Insert Vundle plugins here
+Plugin 'godlygeek/tabular'
+Plugin 'plasticboy/vim-markdown'
+Plugin 'taglist.vim'
+call vundle#end()
 
 " indentation specific settings
 filetype plugin indent on
@@ -79,14 +87,18 @@ set nospell
 
 map <F4> :e %:p:s,.h$,.X123X,:s,.c$,.h,:s,.X123X$,.c,<CR>
 inoremap <Nul> <C-n>
-set tags=tags=./tags,./TAGS,tags,TAGS,/usr/include/tags
+set tags=./tags,./TAGS,tags,TAGS,/usr/include/**/tags
 
 " navigate easily between splits
 nmap <silent> <S-UP> :wincmd k<CR>
 nmap <silent> <S-DOWN> :wincmd j<CR>
 nmap <silent> <S-LEFT> :wincmd h<CR>
 nmap <silent> <S-RIGHT> :wincmd l<CR>
+nmap <silent> <C-F12> :TlistToggle<CR>
 
 noremap <C-g> <C-]>
 
 nmap <silent> <C-i> :call ToggleIndent()<CR>
+
+" Disable markdown plugin folding by default
+let g:vim_markdown_folding_disabled = 1
